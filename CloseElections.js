@@ -21,6 +21,7 @@ var loser_party = "";
 var total_votes = 0;
 
 var districts = [];
+var close_districts = [];
 
 function push_district() {
     districts.push({
@@ -107,6 +108,7 @@ function color(data) {
         if (data.properties.STATE == districts[i].state && data.properties.CD == districts[i].district && districts[i].year == year1) {
             if(close_only) { // only fill in districts in which the top two candidates were within 5% of the total vote
                 if (((districts[i].c1v / districts[i].total) - (districts[i].c2v / districts[i].total)) <= 0.05 ) {
+                    close_districts.push(data);
                     if (districts[i].c1p == "DEMOCRAT") { // if the winning candidate in the district was a democrat
                         return "blue";
                     }
@@ -140,7 +142,7 @@ function TooltipOutput(data) {
     //console.log(districts);
     for(var i = start; i < end; i++) { 
         if (data.properties.STATE == districts[i].state && data.properties.CD == districts[i].district && districts[i].year == year1) {
-            output += districts[i].c1;
+            output += districts[i].c1.toLowerCase();
             if (districts[i].c1p == "DEMOCRAT") {
                 output += "(D): ";
             }
@@ -150,9 +152,11 @@ function TooltipOutput(data) {
             else {
                 output += "(I): ";
             }
-            output += districts[i].c1v + "<br/>";
+            //output += districts[i].c1v + "<br/>";
+            output += ((districts[i].c1v / districts[i].total) * 100).toFixed(2);
+            output += "%<br/>";
             if (districts[i].c2 != "WRITEIN" && districts[i].c2 != "OTHER") {
-                output += districts[i].c2;
+                output += districts[i].c2.toLowerCase();
                 if (districts[i].c2p == "DEMOCRAT") {
                     output += "(D): ";
                 }
@@ -162,12 +166,14 @@ function TooltipOutput(data) {
                 else {
                     output += "(I): ";
                 }
-                output += districts[i].c2v + "<br/>";
+                //output += districts[i].c2v + "<br/>";
+                output += ((districts[i].c2v / districts[i].total) * 100).toFixed(2);
+                output += "%<br/>";
             }
             output += "Vote Difference: ";
             output += (((districts[i].c1v / districts[i].total) - (districts[i].c2v / districts[i].total)) * 100).toFixed(2);
             output += "%<br/>";
-            output += "Total Votes: " + districts[i].total;
+            //output += "Total Votes: " + districts[i].total;
         }
     }
     return output;
@@ -219,16 +225,19 @@ function ChangeDisplay() {
            .enter()
            .append("path")
            .attr("stroke", "black")
+           .attr("stroke-width", "0.5px")
            .attr("fill", function(i) { /*console.log(i);*/ return color(i); })
            .attr("d", path)
         .on("mouseover", function(info) { 
-            div.transition()
-                .duration(200)
-                .style("opacity", .9);
-            //console.log(TooltipOutput(info));
-            div.html(TooltipOutput(info))
-                .style("left", (d3.event.pageX - 380) + "px")
-                .style("top", (d3.event.pageY - 130) + "px");
+            if (close_only || close_districts.includes(info)) {
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                //console.log(TooltipOutput(info));
+                div.html(TooltipOutput(info))
+                    .style("left", (d3.event.pageX - 380) + "px")
+                    .style("top", (d3.event.pageY - 130) + "px");
+            }
         })
         .on("mouseout", function(d){
             div.transition()
@@ -237,6 +246,7 @@ function ChangeDisplay() {
         });
         //console.log(close_only);
         close_only = !close_only;
+        console.log(close_districts);
     });
 }
 
