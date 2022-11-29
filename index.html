@@ -3,6 +3,10 @@
 <head>
     <!-- Meta Tag -->
     <meta charset="utf-8">
+    <meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/>
     <title>Close Elections</title>
 
      <!--  CSS Stylesheet  -->
@@ -35,7 +39,7 @@
     <div id="main" style="width:1545px; margin:0 auto;">
 
         <!-- Title -->
-        <h1 style="padding-top: 20px">Close Elections</h1>
+        <h1 style="padding-top: 20px">Close House Elections</h1>
 
         </p>
 
@@ -78,44 +82,83 @@
 <!--            </div>-->
     
         <!-- place .js src here   -->
-        <script src="//d3js.org/d3.v5.min.js"></script>
+        <!--<script src="//d3js.org/d3.v5.min.js"></script> -->
 <!--
         <script src="tooltip.js"></script>
         <script src="directed_graph.js"></script>
         <script src="selection.js"></script>
 -->
         <div> </div>
-        <button id="close" onclick="ChangeDisplay()">Close Only</button>
+        <button id="close" onclick="ChangeDisplay(true)">Close Only</button>
         <script type="text/javascript" src="CloseElections.js"></script>
-        <script type="text/javascript">
+    
+        <!-- Slider stuff -->
+        <script src="https://unpkg.com/d3-simple-slider"></script>
 
-            // Loading data csv
-           
-                /*var svg = d3.select("#display")
-                    .append("svg")
-                    //.attr("class", "force-scale")
-                    .attr("width", 1020)
-                    .attr("height", 600);
-//
-//                //creating the tooltip div
-                var div = d3.select("#display").append("div")*/
-//                    .attr("class", "tooltip")
-//                    .attr("id", "sun-soil-water")
-//                    .style("opacity", 0);
-//                div.append("div")
-//                div.append('div')
-//                    .attr('class', 'sci_name');
-//                div.append("div")
-//                    .html('<br>');
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+            crossorigin="anonymous"
+        />
+    
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-sm-2"><p id="value-time"></p></div>
+                <div class="col-sm"><div id="slider-time"></div></div>
+            </div>
+        </div>    
 
-            
-                
-//                // run functions here
-//                directed_graph(data, svg, button_flag);
-//                select_handler();
+        <script>
+  // Time
+  var dataTime = d3.range(0, 11, 2).map(function(d) {
+    return new Date(2010 + d, 10, 3);
+  });
+    
+  function sleep(ms) {
+      var n = new Date().getTime();
+      while(new Date().getTime() < n + ms) { }
+  }
 
-        </script>
+  var sliderTime = d3
+    .sliderBottom()
+    .min(d3.min(dataTime))
+    .max(d3.max(dataTime))
+    .step(1000 * 60 * 60 * 24 * 365)
+    .width(300)
+    .tickFormat(d3.timeFormat('%Y'))
+    .tickValues(dataTime)
+    .default(new Date(2010, 10, 3))
+    .on('onchange', val => {
+        //console.log(d3.timeFormat('%Y')(val));
+        var x = d3.timeFormat('%Y')(val);
+        if(x % 2 != 0) {
+            x--;
+        }
+        //ChangeYear();
+        //sleep(100);
+        d3.select('p#value-time').text(d3.timeFormat('%Y')(val));
+        //sleep(100);
+        console.log(1);
+        if (x != year1) {
+           year1 = x;
+            ChangeDisplay(false); 
+        }
+    });
 
+  var gTime = d3
+    .select('div#slider-time')
+    .append('svg')
+    .attr('width', 500)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
+
+  gTime.call(sliderTime);
+
+  d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
+</script>
+    
         <br>
         <hr>
         <br>

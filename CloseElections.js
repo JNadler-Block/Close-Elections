@@ -2,6 +2,13 @@
 var w = 800;
 var h = 500;
 
+//Initialize svg
+var svg = d3.select("#display")
+        .append("svg")
+        //.attr("class", "force-scale")
+        .attr("width", w)
+        .attr("height", h); 
+
 //Define projection, using the Albers USA projection
 var projection = d3.geoAlbersUsa().translate([w/2, h/2]).scale([1000]);;
 
@@ -94,8 +101,8 @@ var end = districts.length;
 function initializeStartEnd() {
     start = 0 + 435 * ((year1 - 2010)/2);
     end = districts.length - 435 * ((2020 - year1)/2);
-    console.log(start);
-    console.log(end);
+    //console.log(start);
+    //console.log(end);
 }
 
 // returns a color used to fill a district based on if a democrat, republican, or independent won in a district
@@ -194,9 +201,13 @@ d3.csv("HouseElectionResults.csv",type).then(function(data) {
     console.log(data);
 });
 
-function ChangeDisplay() {
+function ChangeDisplay(j) {
     // change button name
     ButtonName();
+    
+    if (j) { // if the button was clicked
+        close_only = !close_only;
+    }
     
     // remove svg before redrawing map
     d3.select("#display").select("svg").remove();
@@ -229,7 +240,7 @@ function ChangeDisplay() {
            .attr("fill", function(i) { /*console.log(i);*/ return color(i); })
            .attr("d", path)
         .on("mouseover", function(info) { 
-            if (close_only || close_districts.includes(info)) {
+            if (!close_only || close_districts.includes(info)) {
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
@@ -245,9 +256,31 @@ function ChangeDisplay() {
                 .style("opacity", 0);
         });
         //console.log(close_only);
-        close_only = !close_only;
         console.log(close_districts);
     });
 }
 
-ChangeDisplay(); // initial display
+function ChangeYear() { // year1 is year
+    initializeStartEnd(); 
+    d3.selectAll("path")
+       .style("fill", function(i) { /*console.log(i);*/ return color(i); });
+       /*.attr("d", path)
+    .on("mouseover", function(info) { 
+        if (close_only || close_districts.includes(info)) {
+            div.transition()
+                .duration(200)
+                .style("opacity", .9);
+            div.html(TooltipOutput(info))
+                .style("left", (d3.event.pageX - 380) + "px")
+                .style("top", (d3.event.pageY - 130) + "px");
+        }
+    })
+    .on("mouseout", function(d){
+        div.transition()
+            .duration(300)
+            .style("opacity", 0);
+    });*/
+    //console.log(year1);
+}
+
+ChangeDisplay(false); // initial display
