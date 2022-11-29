@@ -1,0 +1,339 @@
+* {
+    font-family: 'Cormorant Garamond', serif;
+}
+
+h1,
+h2 {
+    color: navy;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 60px;
+    text-align: center;
+}
+
+h3,
+h4 {
+    font-size: 40px;
+}
+
+li {
+    font-size: 30px;
+}
+.sources_header {
+    font-family: 'Cormorant Garamond', serif;
+    text-align: center;
+    color: navy;
+}
+
+.node circle {
+    stroke: #3a403d;
+    stroke-width: .5px;
+}
+
+.titlesX {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px;
+    fill: #aaa;
+    cursor: default;
+}
+
+.titlesY {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px;
+    fill: #aaa;
+    cursor: default;
+}
+
+
+.filter-block {
+    font-family: 'Cormorant Garamond', serif;
+    text-align: center;
+    font-size: 18px;
+    color: navy;
+}
+
+.xaxis path {
+    stroke: #999;
+}
+
+.yaxis path {
+    stroke: #999;
+}
+
+.column {
+    float: left;
+}
+
+.left {
+    width: 75%;
+}
+
+.right {
+    width: 25%;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.static-tooltip {
+    font-family: 'Cormorant Garamond', serif;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+    padding: 10px;
+    box-shadow: 5px 5px lightgrey;
+    padding: 10px;
+    width: 360px;
+    height: 450px;
+    padding: 20px;
+}
+
+.filter-seperate {
+    font-family: 'Cormorant Garamond', serif;
+    border-radius: 5px;
+    border: 1px solid lightgrey;
+}
+
+.sub-filter {
+    color: #09630C;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12pt;
+    text-align: center;
+}
+
+.pic-container {
+    margin: 10px;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    vertical-align: center;
+    border: 1px solid lightgrey;
+    border-radius: 15px;
+    padding-bottom: 10px;
+}
+
+.resize_fit_center {
+    max-width: 100%;
+    max-height: 100%;
+    vertical-align: middle;
+}
+
+.tooltip {
+    position: absolute;
+    line-height: 1;
+    padding: 8px;
+    background-color: ghostwhite;
+    color: black;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 180px;
+    height: 70px;
+    font: 10px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.nickname {
+    font-family: 'Cormorant Garamond', serif;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+}
+
+.sci_name {
+    font-size: 14px;
+    font-style: italic;
+    text-align: center;
+}
+
+.tooltip-text {
+    font-size: 14px;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.material-control-description {
+    font-size: 15px;
+    text-anchor: middle;
+
+}
+
+.custom-control.material-checkbox {
+    --color: #26a69a;
+}
+
+.custom-control.material-checkbox .material-control-input {
+    display: none;
+}
+
+.custom-control.material-checkbox .material-control-input:checked ~ .material-control-indicator {
+    border-color: var(--color);
+    -webkit-transform: rotateZ(45deg) translate(1px, -5px);
+    transform: rotateZ(45deg) translate(1px, -5px);
+    width: 10px;
+    border-top: 0px solid #fff;
+    border-left: 0px solid #fff;
+}
+
+.custom-control.material-checkbox .material-control-indicator {
+    display: inline-block;
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #aaa;
+    transition: .3s;
+}
+
+.custom-control.material-switch {
+    --color: #26a69a;
+    padding-left: 0;
+}
+
+.custom-control.material-switch .material-switch-control-input {
+    display: none;
+}
+
+.custom-control.material-switch .material-switch-control-input:checked ~ .material-switch-control-indicator::after {
+    background-color: var(--color);
+    left: 17px;
+}
+
+.custom-control.material-switch .material-switch-control-indicator {
+    display: inline-block;
+    position: relative;
+    margin: 0 10px;
+    top: 4px;
+    width: 32px;
+    height: 16px;
+    background: #ddd;
+    border-radius: 16px;
+    transition: .3s;
+}
+
+.custom-control.material-switch .material-switch-control-indicator::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    transition: .3s;
+    top: -1px;
+    left: -1px;
+    background: #fdfdfd;
+    box-shadow: 0 2px 10px #aaa;
+}
+
+.list-group:first-child .list-group-control:first-child {
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+}
+
+.list-group::last-child .list-group-control:last-child {
+    border-bottom-left-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}
+
+.list-group.list-group-flush:last-child .list-group-control:last-child {
+    border-bottom: 0;
+    margin-bottom: 0;
+}
+
+.list-group.list-group-flush:first-child .list-group-control:first-child {
+    border-top: 0;
+}
+
+.list-group.list-group-flush .list-group-control {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+}
+
+.list-group .list-group-control {
+    position: relative;
+    display: block;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.list-group .list-group-control .custom-control {
+    margin: 0;
+    padding: .75rem 1.25rem;
+    padding-left: 3rem;
+    display: block;
+}
+
+.list-group .list-group-control .custom-control .custom-control-indicator,
+.list-group .list-group-control .custom-control .material-control-indicator,
+.list-group .list-group-control .custom-control .fill-control-indicator,
+.list-group .list-group-control .custom-control .overflow-control-indicator {
+    top: 1rem;
+    left: 1.25rem;
+}
+
+
+.row .legend {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: bold;
+    /*    fill: darkgrey;    */
+    color: navy;
+    height: 210px;
+    width: 190px;
+}
+
+.row .filters {
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: bold;
+    fill: darkgrey;
+    color: dimgray;
+    height: 200px;
+    width: 125px;
+}
+
+.legend-text {
+    font-size: 13px;
+    font-family: 'Cormorant Garamond';
+    color: #696969;
+}
+
+.graph-toggle input[type="radio"] {
+    display: none;
+}
+
+.graph-toggle label {
+    color: white;
+    display: block;
+    width: 100%;
+    background-color: navy;
+    padding: 4px 11px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.graph-toggle input[type="radio"]:checked + label {
+    background-color: darkgreen;
+}
+
+a {
+    color: skyblue;
+}
