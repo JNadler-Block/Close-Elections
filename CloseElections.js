@@ -153,11 +153,11 @@ function color(data) {
 }
 
 function TooltipOutput(data) {
-    var output = data.properties.STATE + " " + data.properties.CD + "<br/>";
+    var output = data.properties.STATE + " District " + data.properties.CD + "<br/>";
     //console.log(districts);
     for(var i = start; i < end; i++) { 
         if (data.properties.STATE == districts[i].state && data.properties.CD == districts[i].district && districts[i].year == year1) {
-            output += districts[i].c1.toLowerCase();
+            /*output += districts[i].c1.toLowerCase();
             if (districts[i].c1p == "DEMOCRAT") {
                 output += "(D): ";
             }
@@ -166,12 +166,21 @@ function TooltipOutput(data) {
             }
             else {
                 output += "(I): ";
-            }
+            }*/
             //output += districts[i].c1v + "<br/>";
+            if (districts[i].c1p == "DEMOCRAT") {
+                output += "Democrat: ";
+            }
+            else if (districts[i].c1p == "REPUBLICAN") {
+                output += "Republican: ";
+            }
+            else {
+                output += "Independent: ";
+            }
             output += ((districts[i].c1v / districts[i].total) * 100).toFixed(2);
             output += "%<br/>";
             if (districts[i].c2 != "WRITEIN" && districts[i].c2 != "OTHER") {
-                output += districts[i].c2.toLowerCase();
+                /*output += districts[i].c2.toLowerCase();
                 if (districts[i].c2p == "DEMOCRAT") {
                     output += "(D): ";
                 }
@@ -180,14 +189,23 @@ function TooltipOutput(data) {
                 }
                 else {
                     output += "(I): ";
+                }*/
+                if (districts[i].c2p == "DEMOCRAT") {
+                    output += "Democrat: ";
+                }
+                else if (districts[i].c2p == "REPUBLICAN") {
+                    output += "Republican: ";
+                }
+                else {
+                    output += "Independent: ";
                 }
                 //output += districts[i].c2v + "<br/>";
                 output += ((districts[i].c2v / districts[i].total) * 100).toFixed(2);
                 output += "%<br/>";
+                output += "Vote Difference: ";
+                output += (((districts[i].c1v / districts[i].total) - (districts[i].c2v / districts[i].total)) * 100).toFixed(2);
+                output += "%<br/>";
             }
-            output += "Vote Difference: ";
-            output += (((districts[i].c1v / districts[i].total) - (districts[i].c2v / districts[i].total)) * 100).toFixed(2);
-            output += "%<br/>";
             //output += "Total Votes: " + districts[i].total;
         }
     }
