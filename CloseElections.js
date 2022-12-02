@@ -9,8 +9,14 @@ var svg = d3.select("#display")
         .attr("width", w)
         .attr("height", h); 
 
+// Define Tooltip here
+var div = d3.select("#display").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
 //Define projection, using the Albers USA projection
-var projection = d3.geoAlbersUsa().translate([w/2, h/2]).scale([1000]);;
+var projection = d3.geoAlbersUsa().translate([w/2, h/2]).scale([1000]);
+//var projection = d3.geoMercator().rotate([0, 0, 0]);
 
 //Define path generator, using the Albers USA projection
 var path = d3.geoPath()
@@ -94,8 +100,10 @@ function type(d, _, columns) {
 
 var close_only = false; // determines whether or not to only fill in close districts
 var year1 = 2010;
+var previous_year = year1;
 var start = 0;
 var end = districts.length;
+var paths;
 
 // initializes start to be the first index in districts of the year year1, and end to the stopping point for that year
 function initializeStartEnd() {
@@ -201,42 +209,25 @@ d3.csv("HouseElectionResults.csv",type).then(function(data) {
     console.log(data);
 });
 
-function ChangeDisplay(j) {
-    // change button name
-    ButtonName();
-    
-    if (j) { // if the button was clicked
-        close_only = !close_only;
+function DrawMap() {
+    var json_name = "USDistricts2012.json";
+    if (year1 == 2010) {
+        json_name = "USDistricts2010.json";
     }
-    
-    // remove svg before redrawing map
-    d3.select("#display").select("svg").remove();
-    
-    // Create svg
-    var svg = d3.select("#display")
-        .append("svg")
-        //.attr("class", "force-scale")
-        .attr("width", w)
-        .attr("height", h); 
-    
-    // Define Tooltip here
-    var div = d3.select("#display").append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
-    
-    d3.json("USDistricts.json").then(function(json) {
+    d3.json(json_name).then(function(json) {
         initializeStartEnd(); 
         console.log(districts[start]); // first district in year1
         console.log(districts[end-1]); // last district in year1
         console.log(current_district);
         console.log(current_state);
         console.log(districts);
-        svg.selectAll("path")
+        paths = svg.selectAll("path")
            .data(json.features)
            .enter()
            .append("path")
            .attr("stroke", "black")
-           .attr("stroke-width", "0.5px")
+           .attr("stroke-width", "0.4px")
+           .attr("fill-rule", "inherit")
            .attr("fill", function(i) { /*console.log(i);*/ return color(i); })
            .attr("d", path)
         .on("mouseover", function(info) { 
@@ -255,32 +246,44 @@ function ChangeDisplay(j) {
                 .duration(300)
                 .style("opacity", 0);
         });
-        //console.log(close_only);
-        console.log(close_districts);
     });
 }
 
+function ChangeDisplay(j) {
+    // change button name
+    ButtonName();
+    
+    if (j) { // if the button was clicked
+        close_only = !close_only;
+        
+        paths.style("fill", function(info) { return color(info); }); // recolor map only filling in close districts
+    }
+    else {
+        // remove svg before redrawing map
+        d3.select("#display").select("svg").remove();
+
+        // Create svg
+        svg = d3.select("#display")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h); 
+
+
+        DrawMap();
+    }
+}
+
 function ChangeYear() { // year1 is year
-    initializeStartEnd(); 
-    d3.selectAll("path")
-       .style("fill", function(i) { /*console.log(i);*/ return color(i); });
-       /*.attr("d", path)
-    .on("mouseover", function(info) { 
-        if (close_only || close_districts.includes(info)) {
-            div.transition()
-                .duration(200)
-                .style("opacity", .9);
-            div.html(TooltipOutput(info))
-                .style("left", (d3.event.pageX - 380) + "px")
-                .style("top", (d3.event.pageY - 130) + "px");
-        }
-    })
-    .on("mouseout", function(d){
-        div.transition()
-            .duration(300)
-            .style("opacity", 0);
-    });*/
-    //console.log(year1);
+    initializeStartEnd();
+    /*if(close_only) {
+        close_only = !close_only;
+    }*/
+    if ((previous_year == 2010 && year1 != 2010) || (previous_year != 2010 && year1 == 2010)) {// if you should redraw map
+        ChangeDisplay(false);
+    }
+    else {
+        paths.style("fill", function(info) { return color(info); });
+    }   
 }
 
 ChangeDisplay(false); // initial display
