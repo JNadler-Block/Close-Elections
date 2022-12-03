@@ -16,7 +16,9 @@ h4 {
 }
 
 li {
-    font-size: 10px;
+    font-size: 12px;
+    list-style: none;
+    text-align: center;
 }
 .sources_header {
     font-family: 'Cormorant Garamond', serif;
@@ -42,7 +44,6 @@ li {
     fill: #aaa;
     cursor: default;
 }
-
 
 .filter-block {
     font-family: 'Cormorant Garamond', serif;
@@ -75,6 +76,14 @@ li {
     content: "";
     display: table;
     clear: both;
+}
+
+#footer {
+    background-color: #f0f8ff;
+}
+
+.footerWidth {
+    width: 85%;
 }
 
 .static-tooltip {
@@ -307,7 +316,7 @@ div.tooltip {
     fill: darkgrey;
     color: dimgray;
     height: 200px;
-    width: 125px;
+    width: 80px;
 }
 
 .legend-text {
