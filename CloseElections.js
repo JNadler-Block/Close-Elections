@@ -119,10 +119,12 @@ function color(data) {
         return "blue";
     }
     // go through districts[] based on the starting and ending index of year1 (for example looks through all the results of 2012 if year1 is 2012)
+    // ["#eff3ff","#bdd7e7","#6baed6","#3182bd","#08519c"]
     for(var i = start; i < end; i++) { 
+        var margin = ((districts[i].c1v / districts[i].total) - (districts[i].c2v / districts[i].total));
         if (data.properties.STATE == districts[i].state && data.properties.CD == districts[i].district && districts[i].year == year1) {
             if(close_only) { // only fill in districts in which the top two candidates were within 5% of the total vote
-                if (((districts[i].c1v / districts[i].total) - (districts[i].c2v / districts[i].total)) <= 0.05 ) {
+                if (margin <= 0.05 ) {
                     close_districts.push(data);
                     if (districts[i].c1p == "DEMOCRAT") { // if the winning candidate in the district was a democrat
                         return "blue";
@@ -137,11 +139,37 @@ function color(data) {
                 return "white"; // fill the district in white if the election isn't close
             }
             else { // normal display
+                // ["#eff3ff","#bdd7e7","#6baed6","#3182bd","#08519c"]
                 if (districts[i].c1p == "DEMOCRAT" || districts[i].c1p == "DEMOCRATIC-FARMER-LABOR") { // if the winning candidate in the district was a democrat
-                    return "blue";
+                    if (margin <= 0.05) {
+                        return "#8888ff" 
+                    }
+                    else if (margin <= 0.2) {
+                        return "#6666ff"
+                    }
+                    else if (margin <= 0.4) {
+                        return "#4444ff"
+                    }
+                    else if (margin <= 0.6) {
+                        return "#2222ff"
+                    }
+                    else return "#0000ff"
                 }
+                // ["#fee5d9","#fcae91","#fb6a4a","#de2d26","#a50f15"]
                 else if (districts[i].c1p == "REPUBLICAN") { // if the winning candidate in the district was a republican
-                    return "red";
+                    if (margin <= 0.05) {
+                        return "#ff8888"
+                    }
+                    else if (margin <= 0.2) {
+                        return "#ff6666"
+                    }
+                    else if (margin <= 0.4) {
+                         return "#ff4444"
+                     }
+                    else if (margin <= 0.6) {
+                        return "#ff2222"
+                    }
+                    else return "#ff0000"
                 }
                 else {
                     return "yellow"; // if the winning candidate in the district wasn't democrat or republican
