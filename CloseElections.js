@@ -22,6 +22,14 @@ var projection = d3.geoAlbersUsa().translate([w/2, h/2]).scale([1000]);
 var path = d3.geoPath()
           .projection(projection);
 
+var democrat_wins = 0; // How many house seats democrats won in the current year
+var republican_wins = 0; // How many house seats republicans won in the current year
+var independent_wins = 0; // How many house seats independents won in the current year
+
+var democrat_close = 0; // How many close house seats democrats won in the current year
+var republican_close = 0; // How many close house seats republicans won in the current year
+var closest_election; // Holds data for the closest election of the given year;
+
 var current_year = 2008;
 var current_district = 0;
 var current_state = "";
@@ -113,14 +121,6 @@ function initializeStartEnd() {
     //console.log(end);
 }
 
-
-var d = 0; // How many house seats democrats won in the current year
-var r = 0; // How many house seats republicans won in the current year
-var i = 0; // How many house seats independents won in the current year
-
-var dc = 0; // How many close house seats democrats won in the current year
-var rc = 0; // How many close house seats republicans won in the current year
-
 // returns a color used to fill a district based on if a democrat, republican, or independent won in a district
 function color(data) {
     if (data.properties.STATE == "DC") { // fill Washington DC blue
@@ -130,24 +130,34 @@ function color(data) {
     for(var i = start; i < end; i++) { 
         if (data.properties.STATE == districts[i].state && data.properties.CD == districts[i].district && districts[i].year == year1) {
             
-            var margin = ((districts[i].c1v / districts[i].total) - (districts[i].c2v / districts[i].total)); 
+            var margin = (districts[i].c1v / districts[i].total) - (districts[i].c2v / districts[i].total); 
+            var closest_margin = (closest_election.c1v / closest_election.total) - (closest_election.c2v / closest_election.total); 
+            
+            if (margin < closest_margin) { // if current election is closer then the closest election, update closest_election
+                closest_election = districts[i];
+            }
             
             // Increment results for the current year
             if (districts[i].c1p == "DEMOCRAT" || districts[i].c1p == "DEMOCRATIC-FARMER-LABOR") { 
-                d++;
+                democrat_wins++;
+                if (margin <= 0.05 ) {
+                    democrat_close++; // a democrat won a close election
+                }
             }
             else if (districts[i].c1p == "REPUBLICAN") { 
-                r++;
+                republican_wins++;
+                if (margin <= 0.05 ) {
+                    republican_close++; // a republican won a close election
+                }
             }
             else {
-                i++;
+                idependent_wins++;
             }
             
             if(close_only) { // only fill in districts in which the top two candidates were within 5% of the total vote
                 if (margin <= 0.05 ) {
                     close_districts.push(data);
                     if (districts[i].c1p == "DEMOCRAT" || districts[i].c1p == "DEMOCRATIC-FARMER-LABOR") { // if the winning candidate in the district was a democrat
-                        dc++; // a democrat won a close election
                         if (margin <= 0.01) {
                             return "#8888ff";
                         }
@@ -160,7 +170,6 @@ function color(data) {
                         
                     }
                     else if (districts[i].c1p == "REPUBLICAN") { // if the winning candidate in the district was a republican
-                        rc++; // a republican won a close election
                         if (margin <= 0.01) {
                             return "#ff8888";
                         }
@@ -301,11 +310,13 @@ d3.csv("HouseElectionResults.csv",type).then(function(data) {
 
 function DrawMap() {
     // Reset results because display is being drawn
-    d = 0;
+    /*d = 0;
     r = 0;
     i = 0;
     dc = 0;
-    rc = 0;
+    rc = 0;*/
+    //democrat_wins = 0;
+    //republican_wins = 0;
     
     var json_name = "USDistricts2012.json";
     if (year1 == 2010) {
@@ -318,6 +329,7 @@ function DrawMap() {
         console.log(current_district);
         console.log(current_state);
         console.log(districts);
+        closest_election = districts[start];
         paths = svg.selectAll("path")
            .data(json.features)
            .enter()
@@ -343,6 +355,7 @@ function DrawMap() {
                 .duration(300)
                 .style("opacity", 0);
         });
+        side_tooltip();
     });
 }
 
@@ -367,6 +380,7 @@ function ChangeDisplay(j) {
 
 
         DrawMap();
+        //console.log(democrat_wins);
         
         var zoom = d3.zoom()
           .scaleExtent([1, 8])
@@ -376,28 +390,47 @@ function ChangeDisplay(j) {
           });
 
         svg.call(zoom);
+        //side_tooltip();
     }
+}
+
+function side_tooltip() {
+    var party = "An Independent";
+    if (closest_election.c1p == "DEMOCRAT" || closest_election.c1p == "DEMOCRATIC-FARMER-LABOR") {
+        party = "Democrats";
+    }
+    else if (closest_election.c1p == "REPUBLICAN") {
+        party = "Republicans";
+    }
+    var vote_margin = (((closest_election.c1v / closest_election.total) - (closest_election.c2v / closest_election.total)) * 100).toFixed(3);
+     //(((districts[i].c1v / districts[i].total) - (districts[i].c2v / districts[i].total)) * 100).toFixed(2);
+    d3.select("#static-title").html("Close House Elections of " + year1);
+    d3.select("#static-data").html("<br/><span style='property:red'>Democrats</span> won " + democrat_wins + " seats.<br/>Republicans won " + republican_wins + 
+                                   " seats.<br/><br/>Out of " + (republican_close + democrat_close) + " close elections:<br/> Democrats won " + democrat_close + " close elections.<br/>Republicans won " + republican_close + " close elections.<br/><br/><br/>Closest House Election of " + year1 + ":<br/>" + closest_election.state + " District " + closest_election.district + "<br/>" + party + " won by " + vote_margin + "% of the vote.");
 }
 
 function ChangeYear() { // year1 is year
     initializeStartEnd();
+    close_districts = [];
+    democrat_wins = 0;
+    republican_wins = 0;
+    democrat_close = 0;
+    republican_close = 0;
+    closest_election = districts[start];
+    
     if ((previous_year == 2010 && year1 != 2010) || (previous_year != 2010 && year1 == 2010)) { // if you should redraw map
         ChangeDisplay(false);
     }
     else { // just refill the colors of districts
         // Reset results for year because year changed
-        d = 0;
-        r = 0;
-        i = 0;
-        dc = 0;
-        rc = 0;
         paths.style("fill", function(info) { return color(info); });
+        side_tooltip();
+        // Fill out tooltip with statistics for the year
+        //side_tooltip();
     }   
     
     // Fill out tooltip with statistics for the year
-    d3.select("#static-tip-data").html("Close House Elections of " + year1);
-    
+   // side_tooltip();
 }
 
 ChangeDisplay(false); // initial display
-d3.select("#static-tip-data").html("Close House Elections of " + year1);
