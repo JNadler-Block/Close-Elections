@@ -6,17 +6,17 @@ h1,
 h2 {
     color: navy;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 60px;
+    font-size: 20px;
     text-align: center;
 }
 
 h3,
 h4 {
-    font-size: 40px;
+    font-size: 20px;
 }
 
 li {
-    font-size: 30px;
+    font-size: 10px;
 }
 .sources_header {
     font-family: 'Cormorant Garamond', serif;
@@ -31,7 +31,7 @@ li {
 
 .titlesX {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 21px;
+    font-size: 15px;
     fill: #aaa;
     cursor: default;
 }
