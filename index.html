@@ -39,7 +39,7 @@
     <div id="main" style="width:1545px; margin:0 auto;">
 
         <!-- Title -->
-        <h1 style="padding-top: 20px">Close House Elections</h1>
+        <h1>Close House Elections</h1>
 
         </p>
 
@@ -62,8 +62,8 @@
                 <!-- Display graph here -->
                 <div class="row" id="display" style="height=600px"></div>
 
-                <!--Spacer Row-->
-                <div class="row"><br></div>
+                <!--Spacer Row
+                <div class="row"><br></div>-->
 
 
             <!-- Sidebar for filters and toggles and tooltip (?) -->
@@ -79,8 +79,8 @@
                     </div>
                 </div>
                 
-                <!-- Spacing between filters and legend -->
-                <br><br><br><br>
+                <!-- Spacing between filters and legend
+                <br><br><br><br>-->
 
 <!--            </div>-->
     
@@ -119,12 +119,17 @@
         <div> </div>
         <button id="close" onclick="ChangeDisplay(true)">Close Only</button>
         <script type="text/javascript" src="CloseElections.js"></script>
+        <!-- Slider stuff -->
+            <script src="https://unpkg.com/d3-simple-slider"></script>
 
-        <div class="col-md-3"></div>
+        <div class="col-md-3">
+            <!-- Slider stuff
+            <script src="https://unpkg.com/d3-simple-slider"></script>-->
+        </div>
 
     </div>
-        <!-- Slider stuff -->
-        <script src="https://unpkg.com/d3-simple-slider"></script>
+        <!-- Slider stuff 
+        <script src="https://unpkg.com/d3-simple-slider"></script>-->
 
         <link
             rel="stylesheet"
@@ -161,7 +166,7 @@
         if(x % 2 != 0) {
             x--;
         }
-        d3.select('p#value-time').text(d3.timeFormat('%Y')(val));
+        //d3.select('p#value-time').text(d3.timeFormat('%Y')(val));
         if (x != year1) {
            year1 = x;
            ChangeYear();
@@ -180,7 +185,7 @@
 
   gTime.call(sliderTime);
 
-  d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
+  //d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
 </script>
     
         <br>
