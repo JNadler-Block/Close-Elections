@@ -137,7 +137,7 @@ function color(data) {
                 return "white"; // fill the district in white if the election isn't close
             }
             else { // normal display
-                if (districts[i].c1p == "DEMOCRAT") { // if the winning candidate in the district was a democrat
+                if (districts[i].c1p == "DEMOCRAT" || districts[i].c1p == "DEMOCRATIC-FARMER-LABOR") { // if the winning candidate in the district was a democrat
                     return "blue";
                 }
                 else if (districts[i].c1p == "REPUBLICAN") { // if the winning candidate in the district was a republican
@@ -168,7 +168,7 @@ function TooltipOutput(data) {
                 output += "(I): ";
             }*/
             //output += districts[i].c1v + "<br/>";
-            if (districts[i].c1p == "DEMOCRAT") {
+            if (districts[i].c1p == "DEMOCRAT" || districts[i].c1p == "DEMOCRATIC-FARMER-LABOR") {
                 output += "Democrat: ";
             }
             else if (districts[i].c1p == "REPUBLICAN") {
@@ -190,7 +190,7 @@ function TooltipOutput(data) {
                 else {
                     output += "(I): ";
                 }*/
-                if (districts[i].c2p == "DEMOCRAT") {
+                if (districts[i].c2p == "DEMOCRAT" || districts[i].c2p == "DEMOCRATIC-FARMER-LABOR") {
                     output += "Democrat: ";
                 }
                 else if (districts[i].c2p == "REPUBLICAN") {
@@ -288,12 +288,13 @@ function ChangeDisplay(j) {
 
 
         DrawMap();
-       var zoom = d3.zoom()
-      .scaleExtent([1, 8])
-      .on('zoom', function() {
-          svg.selectAll('path')
-           .attr('transform', d3.event.transform);
-      });
+        
+        var zoom = d3.zoom()
+          .scaleExtent([1, 8])
+          .on('zoom', function() {
+              svg.selectAll('path')
+               .attr('transform', d3.event.transform);
+          });
 
         svg.call(zoom);
     }
