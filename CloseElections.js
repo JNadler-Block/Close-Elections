@@ -1,3 +1,4 @@
+
 //Width and height
 var w = 800;
 var h = 500;
@@ -307,6 +308,54 @@ d3.csv("HouseElectionResults.csv",type).then(function(data) {
     push_district(); // adds the last district data to districts[]
     console.log(data);
 });
+function drawLegend() {
+
+    d3.select("#display").selectAll("#legend").remove()
+    var domain
+    var range
+
+    console.log("Hello")
+
+    if (close_only)
+    {
+        console.log("closed")
+        domain = ["D within 5%","D within 10%","D within 20%","D within 40%",5,6]
+        range = ["rgb(136, 136, 255)","rgb(102, 102, 255)","rgb(68, 68, 255)","rgb(34, 34, 255)","rgb(0, 0, 255)","rgb(255, 136, 136)"]
+    }
+    else
+    {
+        console.log("regular")
+        domain = ["D within 5%","D within 10%","D within 20%","D within 40%","D over 40%","R within 5%","R within 10%","R within 20%","R within 40%","R over 40%"]
+        range = ["rgb(136, 136, 255)","rgb(102, 102, 255)","rgb(68, 68, 255)","rgb(34, 34, 255)","rgb(0, 0, 255)","rgb(255, 136, 136)","rgb(255, 102, 102)","rgb(255, 68, 68)","rgb(255, 34, 34)","rgb(255, 0, 0)"]
+    }
+
+
+    var sequentialScale = d3.scaleOrdinal()
+    .domain(domain)
+    .range(range);
+
+    var legend = d3.select("#display").append("svg")
+        .attr("id","legend")
+        .attr("width", 200)
+        
+        
+
+    legend.append("g")
+    .attr("class", "legendSequential")
+    .attr("transform", "translate(20,20)")
+    .attr('width', 500)
+    .attr('height', 100)
+
+    var legendSequential = d3.legendColor()
+        .shapeWidth(30)
+        .cells([1,2,3,4,5,6,7,8,9,10])
+        .title("Vote Margin")
+        .scale(sequentialScale) 
+        
+
+    legend.select(".legendSequential")
+    .call(legendSequential);
+}
 
 function DrawMap() {
     // Reset results because display is being drawn
@@ -366,6 +415,7 @@ function DrawMap() {
         //console.log(f);
         side_tooltip();
     });
+
 }
 
 function ChangeDisplay(j) {
@@ -376,10 +426,11 @@ function ChangeDisplay(j) {
         close_only = !close_only;
         
         paths.style("fill", function(info) { return color(info); }); // recolor map only filling in close districts
+        drawLegend()
     }
     else {
         // remove svg before redrawing map
-        d3.select("#display").select("svg").remove();
+        d3.select("#display").selectAll("svg").remove();
 
         // Create svg
         svg = d3.select("#display")
@@ -387,8 +438,8 @@ function ChangeDisplay(j) {
             .attr("width", w)
             .attr("height", h); 
 
-
         DrawMap();
+        drawLegend();
         
         var zoom = d3.zoom()
           .scaleExtent([1, 8])
