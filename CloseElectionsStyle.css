@@ -20,6 +20,13 @@ li {
     list-style: none;
     text-align: center;
 }
+
+#blurb {
+    position: relative;
+    left: 450px;
+    text-align: center;
+    width: 40%;
+}
 .sources_header {
     font-family: 'Cormorant Garamond', serif;
     text-align: center;
