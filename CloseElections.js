@@ -192,13 +192,13 @@ function color(data) {
                     if (margin <= 0.05) {
                         return "#8888ff";
                     }
-                    else if (margin <= 0.2) {
+                    else if (margin <= 0.1) {
                         return "#6666ff";
                     }
-                    else if (margin <= 0.4) {
+                    else if (margin <= 0.2) {
                         return "#4444ff";
                     }
-                    else if (margin <= 0.6) {
+                    else if (margin <= 0.4) {
                         return "#2222ff";
                     }
                     else {
@@ -295,9 +295,9 @@ function TooltipOutput(data) {
 
 // determine text on button
 function ButtonName () {
-    var b = "Highlight Close Districts";
-    if (close_only) {
-        b = "Show All Districts";
+    var b = "Show All Districts";
+    if (!close_only) {
+        b = "Highlight Close Districts";
     }
     d3.select("#close").text(b);
 }
@@ -340,6 +340,7 @@ function DrawMap() {
            .attr("fill", function(i) { /*console.log(i);*/ return color(i); })
            .attr("d", path)
         .on("mouseover", function(info) { 
+            //style("stroke", "white");
             if (!close_only || close_districts.includes(info)) {
                 div.transition()
                     .duration(200)
@@ -355,13 +356,21 @@ function DrawMap() {
                 .duration(300)
                 .style("opacity", 0);
         });
+        //var f = 0;
+        for (var i = start; i < end; i++) {
+            if (districts[i].state == "New York" && districts[i].c1p == "DEMOCRAT") {
+                console.log(districts[i].district);
+                //f++;
+            }
+        }
+        //console.log(f);
         side_tooltip();
     });
 }
 
 function ChangeDisplay(j) {
     // change button name
-    ButtonName();
+    //ButtonName();
     
     if (j) { // if the button was clicked
         close_only = !close_only;
@@ -380,7 +389,6 @@ function ChangeDisplay(j) {
 
 
         DrawMap();
-        //console.log(democrat_wins);
         
         var zoom = d3.zoom()
           .scaleExtent([1, 8])
@@ -392,6 +400,8 @@ function ChangeDisplay(j) {
         svg.call(zoom);
         //side_tooltip();
     }
+    // change button name
+    ButtonName();
 }
 
 function side_tooltip() {
