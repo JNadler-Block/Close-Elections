@@ -114,8 +114,8 @@ function initializeStartEnd() {
     //console.log(start);
     //console.log(end);
 }
-// 
-returns a color used to fill a district based on if a democrat, republican, or independent won in a district
+
+// returns a color used to fill a district based on if a democrat, republican, or independent won in a district
 function color(data) {
     if (data.properties.STATE == "DC") { // fill Washington DC blue
         return "blue";
