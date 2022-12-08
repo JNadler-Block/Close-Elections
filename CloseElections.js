@@ -369,8 +369,8 @@ function DrawMap() {
                     .style("opacity", .9);
                     //console.log(TooltipOutput(info));
                     div.html(TooltipOutput(info))
-                    .style("left", (d3.event.pageX - 380) + "px")
-                    .style("top", (d3.event.pageY - 130) + "px");
+                    .style("left", (d3.event.pageX - 550) + "px")
+                    .style("top", (d3.event.pageY - 250) + "px");
                 }
             })
             .on("mouseout", function(d){
