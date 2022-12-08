@@ -10,7 +10,6 @@ h2 {
     text-align: center;
 }
 
-
 li {
     font-size: 12px;
     list-style: none;
@@ -24,7 +23,9 @@ li {
     width: 40%;
 }
 .sources_header {
+    width: 115%;
     font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
     text-align: center;
     color: navy;
 }
