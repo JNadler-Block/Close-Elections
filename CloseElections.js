@@ -294,13 +294,13 @@ function drawLegend() {
     //console.log("Hello")
     if (close_only) {
         console.log("closed")
-        domain = ["D within 5%","D within 10%","D within 20%","D within 40%",5,6]
-        range = ["rgb(136, 136, 255)","rgb(102, 102, 255)","rgb(68, 68, 255)","rgb(34, 34, 255)","rgb(0, 0, 255)","rgb(255, 136, 136)"]
+        domain = ["D within 5%","R within 5%"];
+        range = ["rgb(136, 136, 255)", "rgb(255, 136, 136)"];
     }
     else {
         console.log("regular")
-        domain = ["D within 5%","D within 10%","D within 20%","D within 40%","D over 40%","R within 5%","R within 10%","R within 20%","R within 40%","R over 40%"]
-        range = ["rgb(136, 136, 255)","rgb(102, 102, 255)","rgb(68, 68, 255)","rgb(34, 34, 255)","rgb(0, 0, 255)","rgb(255, 136, 136)","rgb(255, 102, 102)","rgb(255, 68, 68)","rgb(255, 34, 34)","rgb(255, 0, 0)"]
+        domain = ["D within 5%","D within 10%","D within 20%","D within 40%","D over 40%","R within 5%","R within 10%","R within 20%","R within 40%","R over 40%"];
+        range = ["rgb(136, 136, 255)","rgb(102, 102, 255)","rgb(68, 68, 255)","rgb(34, 34, 255)","rgb(0, 0, 255)","rgb(255, 136, 136)","rgb(255, 102, 102)","rgb(255, 68, 68)","rgb(255, 34, 34)","rgb(255, 0, 0)"];
     }
     
     var sequentialScale = d3.scaleOrdinal()
